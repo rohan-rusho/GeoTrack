@@ -1,3 +1,4 @@
+```md
 <div align="center">
 
 # 📍 GeoTrack
@@ -56,10 +57,6 @@ Whether you're testing location-based applications, analyzing movement patterns,
 <img src="app/SS/Screenshot_20260623_002013.png" width="220">
 <img src="app/SS/Screenshot_20260623_002020.png" width="220">
 
-<br><br>
-
-<img src="app/SS/Screenshot_20260623_002027.png" width="220">
-
 </div>
 
 ---
@@ -101,5 +98,45 @@ Allow the following permissions:
 
 For uninterrupted tracking:
 
-```text
 Settings → Apps → GeoTrack → Battery → Unrestricted
+
+### 4️⃣ Start Tracking
+
+Tap **Start Tracking** to begin collecting location data in the background.
+
+### 5️⃣ View History
+
+Navigate to the History section to search, analyze, export, or delete saved records.
+
+---
+
+## ⚙️ System Requirements
+
+- Android 7.0 (API 24) or higher
+- GPS / Location Services Enabled
+- Location Permission Granted
+
+---
+
+## 🔐 Privacy Policy
+
+GeoTrack does not upload, share, or synchronize any data with external servers.
+
+All location records remain securely stored on your device.
+
+---
+
+## 👨‍💻 Developer
+
+**Rohan Islam**
+
+GitHub: https://github.com/rohan-rusho
+
+---
+
+<div align="center">
+
+Made with ❤️ using Android, Java, Room Database, and Fused Location Provider
+
+</div>
+```
