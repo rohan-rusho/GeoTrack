@@ -1,56 +1,105 @@
-# GeoTrack 📍
+<div align="center">
 
-GeoTrack is a professional background location tracking system for Android. It is designed to reliably capture device coordinates at specific intervals while providing a comprehensive interface to manage and analyze your movement data.
+# 📍 GeoTrack
 
-[**📥 Download GeoTrack APK**](https://github.com/rohan-rusho/GeoTrack/releases/latest)
+### Professional Background Location Tracking for Android
+
+Track, monitor, and analyze location history with reliable background tracking and complete privacy.
+
+<br>
+
+<a href="https://github.com/rohan-rusho/GeoTrack/releases/latest/download/GeoTrack.apk">
+  <img src="https://img.shields.io/badge/📥_Download_Latest_APK-0056D2?style=for-the-badge&logo=android&logoColor=white">
+</a>
+
+<br><br>
+
+<img src="https://img.shields.io/github/v/release/rohan-rusho/GeoTrack?style=for-the-badge">
+<img src="https://img.shields.io/github/downloads/rohan-rusho/GeoTrack/total?style=for-the-badge">
+<img src="https://img.shields.io/badge/Android-7.0+-success?style=for-the-badge">
+
+</div>
+
+---
+
+## ✨ Overview
+
+GeoTrack is a professional Android application designed for reliable background location tracking. Using Android Foreground Services and Google's Fused Location Provider, GeoTrack records accurate coordinates at customizable intervals while keeping all data securely stored on your device.
+
+Whether you're testing location-based applications, analyzing movement patterns, or collecting GPS logs, GeoTrack provides a clean and efficient solution.
 
 ---
 
 ## 📸 App Showcase
 
 <div align="center">
-  <img src="app/SS/Screenshot_20260623_001857.png" width="200">
-  <img src="app/SS/Screenshot_20260623_001902.png" width="200">
-  <img src="app/SS/Screenshot_20260623_001906.png" width="200">
-  <img src="app/SS/Screenshot_20260623_001909.png" width="200">
-  <br><br>
-  <img src="app/SS/Screenshot_20260623_001911.png" width="200">
-  <img src="app/SS/Screenshot_20260623_001914.png" width="200">
-  <img src="app/SS/Screenshot_20260623_001923.png" width="200">
-  <img src="app/SS/Screenshot_20260623_001930.png" width="200">
-  <br><br>
-  <img src="app/SS/Screenshot_20260623_002001.png" width="200">
-  <img src="app/SS/Screenshot_20260623_002005.png" width="200">
-  <img src="app/SS/Screenshot_20260623_002013.png" width="200">
-  <img src="app/SS/Screenshot_20260623_002020.png" width="200">
-  <br><br>
-  <img src="app/SS/Screenshot_20260623_002027.png" width="200">
+
+<img src="app/SS/Screenshot_20260623_001857.png" width="220">
+<img src="app/SS/Screenshot_20260623_001902.png" width="220">
+<img src="app/SS/Screenshot_20260623_001906.png" width="220">
+
+<br><br>
+
+<img src="app/SS/Screenshot_20260623_001909.png" width="220">
+<img src="app/SS/Screenshot_20260623_001911.png" width="220">
+<img src="app/SS/Screenshot_20260623_001914.png" width="220">
+
+<br><br>
+
+<img src="app/SS/Screenshot_20260623_001923.png" width="220">
+<img src="app/SS/Screenshot_20260623_001930.png" width="220">
+<img src="app/SS/Screenshot_20260623_002001.png" width="220">
+
+<br><br>
+
+<img src="app/SS/Screenshot_20260623_002005.png" width="220">
+<img src="app/SS/Screenshot_20260623_002013.png" width="220">
+<img src="app/SS/Screenshot_20260623_002020.png" width="220">
+
+<br><br>
+
+<img src="app/SS/Screenshot_20260623_002027.png" width="220">
+
 </div>
 
 ---
 
-## 🚀 Key Features
+## 🚀 Features
 
-- **Reliable Background Tracking**: Utilizes a Foreground Service and Google's Fused Location Provider to ensure consistent tracking even when the device is locked.
-- **Customizable Intervals**: Flexible tracking options ranging from seconds to hours.
-- **Data Persistence**: All records are stored locally using a Room Database.
-- **Detailed History**: A complete log of your location history with search and filter capabilities.
-- **Live Statistics**: Real-time dashboard showing total records, service runtime, and battery status.
-- **Secure & Private**: All data remains on your device. No cloud syncing.
+### 📍 Reliable Background Tracking
+Utilizes Android Foreground Services and Google's Fused Location Provider to ensure continuous tracking even when the device is locked.
 
-## 🛠️ How to Use
+### ⏱️ Customizable Tracking Intervals
+Configure location updates from seconds to hours based on your requirements.
 
-1. **Install the App**: Download and install the APK from the link above.
-2. **Grant Permissions**: Upon first launch, the app will request Location and Notification permissions. Please allow them for proper tracking.
-3. **Battery Optimization**: For best results, go to the app's settings or dashboard and set Battery Usage to **"Unrestricted"**. This prevents the system from stopping the service during deep sleep.
-4. **Start Tracking**: Simply click the **Start Tracking** button. You can monitor the status from the persistent notification or the "Service Status" screen.
-5. **Analyze History**: Visit the History tab to search, filter, share, or delete recorded coordinates.
+### 🗄️ Local Data Storage
+Stores all tracking records locally using Room Database for fast and secure access.
 
-## ⚙️ System Requirements
+### 📊 Real-Time Dashboard
+Monitor service status, runtime, battery level, and total records in real time.
 
-- Android 7.0 (API 24) or higher.
-- GPS/Location services enabled.
+### 🔍 Advanced History Management
+Search, filter, export, share, and manage recorded coordinates with ease.
+
+### 🔒 Privacy First
+No cloud storage, no external servers, and no third-party tracking.
 
 ---
 
-Developed with ❤️ by [**Rohan**](https://github.com/rohan-rusho)
+## 🛠️ Getting Started
+
+### 1️⃣ Install GeoTrack
+Download and install the latest APK using the button above.
+
+### 2️⃣ Grant Permissions
+Allow the following permissions:
+
+- Location Permission
+- Notification Permission
+
+### 3️⃣ Disable Battery Restrictions
+
+For uninterrupted tracking:
+
+```text
+Settings → Apps → GeoTrack → Battery → Unrestricted
