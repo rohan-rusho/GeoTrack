@@ -138,4 +138,3 @@ GitHub: https://github.com/rohan-rusho
 Made with ❤️ using Android, Java, Room Database, and Fused Location Provider
 
 </div>
-```
