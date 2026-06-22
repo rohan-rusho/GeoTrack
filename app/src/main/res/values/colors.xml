@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#0056D2</color>
+    <color name="primary_container">#D7E2FF</color>
+    <color name="on_primary">#FFFFFF</color>
+
+    <color name="secondary">#565E71</color>
+    <color name="secondary_container">#DAE2F9</color>
+
+    <color name="surface">#FDFBFF</color>
+    <color name="surface_variant">#E1E2EC</color>
+
+    <color name="error">#BA1A1A</color>
+    <color name="success">#50D156</color>
+    <color name="brown">#795548</color>
+    <color name="green">#388E3C</color>
+
+    <color name="text_primary">#1B1B1F</color>
+    <color name="text_secondary">#44474E</color>
+
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="progress_start">#00E676</color>
+    <color name="progress_center">#00B0FF</color>
+    <color name="progress_end">#2979FF</color>
+
+    <color name="blue_gradient_start">#0056D2</color>
+    <color name="blue_gradient_end">#002E7A</color>
+
+    <!-- Notification Colors -->
+    <color name="notif_dot_green">#4CAF50</color>
+    <color name="notif_blue_primary">#1976D2</color>
+    <color name="notif_red_primary">#D32F2F</color>
+    <color name="notif_text_primary">#212121</color>
+    <color name="notif_text_secondary">#757575</color>
+</resources>

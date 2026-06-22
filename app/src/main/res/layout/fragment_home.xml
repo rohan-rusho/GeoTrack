@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/surface">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars="vertical"
+        android:scrollbarThumbVertical="@color/primary"
+        android:scrollbarSize="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:paddingBottom="32dp"
+            android:clipToPadding="false">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                android:layout_marginBottom="16dp"
+                android:focusable="false"
+                android:clickable="false">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/blue_gradient"
+                    android:padding="20dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:focusable="false"
+                    android:clickable="false">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="start|center_vertical"
+                        android:focusable="false"
+                        android:clickable="false">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:focusable="false"
+                            android:clickable="false">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Geo"
+                                android:textColor="@color/white"
+                                android:textSize="28sp"
+                                android:textStyle="bold" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Track"
+                                android:textColor="@color/success"
+                                android:textSize="28sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Background Location Tracking System"
+                            android:textColor="@color/white"
+                            android:textSize="13sp"
+                            android:alpha="0.8"
+                            android:layout_marginTop="4dp"
+                            android:focusable="false"
+                            android:clickable="false" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_banner_logo"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:contentDescription="Banner Logo"
+                        android:src="@drawable/logo_transparent"
+                        android:focusable="false"
+                        android:clickable="false" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Tracking Status Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/CardView.Styled"
+                android:focusable="false"
+                android:clickable="true">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:focusable="false"
+                    android:clickable="false">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:clickable="false">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/tracking_status"
+                            android:textStyle="bold"
+                            android:textSize="16sp"
+                            android:textColor="@color/text_primary"
+                            android:layout_toStartOf="@id/tv_status_badge"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginEnd="8dp" />
+                        <TextView
+                            android:id="@+id/tv_status_badge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="INACTIVE"
+                            android:textColor="@color/white"
+                            android:background="@drawable/red_badge_bg"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="4dp"
+                            android:layout_alignParentEnd="true"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="16dp"
+                        android:weightSum="2"
+                        android:baselineAligned="false"
+                        android:focusable="false"
+                        android:clickable="false">
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/last_updated" android:textSize="12sp" android:textColor="@color/text_secondary" />
+                            <TextView android:id="@+id/tv_home_last_updated" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="--" android:textStyle="bold" android:textColor="@color/text_primary" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/tracking_interval" android:textSize="12sp" android:textColor="@color/text_secondary" />
+                            <TextView android:id="@+id/tv_home_interval" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="5 Minutes" android:textStyle="bold" android:textColor="@color/text_primary" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Current Location Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/CardView.Styled"
+                android:focusable="false"
+                android:clickable="false">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:focusable="false"
+                    android:clickable="false">
+                    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:focusable="false" android:clickable="false">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/current_location"
+                            android:textStyle="bold"
+                            android:textSize="16sp"
+                            android:textColor="@color/text_primary"
+                            android:layout_toStartOf="@id/tv_badge_latest"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginEnd="8dp" />
+                        <TextView
+                            android:id="@+id/tv_badge_latest"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/latest_badge"
+                            android:textColor="@color/primary"
+                            android:background="@color/primary_container"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="4dp"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:layout_alignParentEnd="true" />
+                    </RelativeLayout>
+
+                    <GridLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:columnCount="2"
+                        android:layout_marginTop="16dp"
+                        android:focusable="false"
+                        android:clickable="false">
+                        <LinearLayout android:orientation="vertical" android:layout_width="0dp" android:layout_columnWeight="1">
+                            <TextView android:text="@string/latitude" android:textSize="12sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_secondary" />
+                            <TextView android:id="@+id/tv_home_lat" android:text="--" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_primary" android:textSize="18sp" />
+                        </LinearLayout>
+                        <LinearLayout android:orientation="vertical" android:layout_width="0dp" android:layout_columnWeight="1">
+                            <TextView android:text="@string/longitude" android:textSize="12sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_secondary" />
+                            <TextView android:id="@+id/tv_home_lng" android:text="--" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_primary" android:textSize="18sp" />
+                        </LinearLayout>
+                    </GridLayout>
+
+                    <GridLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:columnCount="2"
+                        android:layout_marginTop="12dp"
+                        android:focusable="false"
+                        android:clickable="false">
+                        <LinearLayout android:orientation="vertical" android:layout_width="0dp" android:layout_columnWeight="1">
+                            <TextView android:text="@string/timestamp" android:textSize="12sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_secondary" />
+                            <TextView android:id="@+id/tv_home_timestamp" android:text="--" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_primary" />
+                        </LinearLayout>
+                        <LinearLayout android:orientation="vertical" android:layout_width="0dp" android:layout_columnWeight="1">
+                            <TextView android:text="@string/accuracy" android:textSize="12sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_secondary" />
+                            <TextView android:id="@+id/tv_home_accuracy" android:text="--" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_primary" />
+                        </LinearLayout>
+                    </GridLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Statistics Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="4"
+                android:layout_marginTop="8dp"
+                android:focusable="false"
+                android:clickable="false">
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    style="@style/CardView.Styled"
+                    android:focusable="false"
+                    android:clickable="false">
+                    <LinearLayout android:padding="8dp" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:focusable="false" android:clickable="false">
+                        <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_history" app:tint="@color/primary" android:contentDescription="Records" />
+                        <TextView android:text="Total" android:textSize="10sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
+                        <TextView android:id="@+id/tv_stat_total" android:text="0" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_primary" android:textSize="14sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    style="@style/CardView.Styled"
+                    android:focusable="false"
+                    android:clickable="false">
+                    <LinearLayout android:padding="8dp" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:focusable="false" android:clickable="false">
+                        <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_location" app:tint="@color/success" android:contentDescription="Updates" />
+                        <TextView android:text="Today" android:textSize="10sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
+                        <TextView android:id="@+id/tv_stat_today" android:text="0" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_primary" android:textSize="14sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    style="@style/CardView.Styled"
+                    android:focusable="false"
+                    android:clickable="false">
+                    <LinearLayout android:padding="8dp" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:focusable="false" android:clickable="false">
+                        <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_history" app:tint="@color/secondary" android:contentDescription="Runtime" />
+                        <TextView android:text="Runtime" android:textSize="10sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
+                        <TextView android:id="@+id/tv_stat_runtime" android:text="00:00:00" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_primary" android:textSize="10sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    style="@style/CardView.Styled"
+                    android:focusable="false"
+                    android:clickable="false">
+                    <LinearLayout android:padding="8dp" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:focusable="false" android:clickable="false">
+                        <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_settings" app:tint="@color/error" android:contentDescription="Battery" />
+                        <TextView android:text="Battery" android:textSize="10sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_secondary" android:layout_marginTop="4dp" />
+                        <TextView android:id="@+id/tv_stat_battery" android:text="0%" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/text_primary" android:textSize="14sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- Action Buttons Container -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp">
+
+                <!-- Start Button (Initial State) -->
+                <Button
+                    android:id="@+id/btn_main_start"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:text="Start Tracking"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:icon="@drawable/ic_play_white"
+                    app:iconGravity="textStart"
+                    app:iconSize="28dp"
+                    app:cornerRadius="16dp"
+                    android:layout_marginHorizontal="8dp" />
+
+                <!-- Running/Paused State Buttons -->
+                <LinearLayout
+                    android:id="@+id/layout_active_controls"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    android:visibility="gone">
+
+                    <Button
+                        android:id="@+id/btn_main_pause_resume"
+                        android:layout_width="0dp"
+                        android:layout_height="64dp"
+                        android:layout_weight="1"
+                        android:text="Pause"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:icon="@drawable/ic_pause_white"
+                        app:iconGravity="textStart"
+                        app:cornerRadius="16dp"
+                        android:layout_marginHorizontal="8dp" />
+
+                    <Button
+                        android:id="@+id/btn_main_stop"
+                        android:layout_width="0dp"
+                        android:layout_height="64dp"
+                        android:layout_weight="1"
+                        android:text="Stop"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:backgroundTint="@color/error"
+                        app:icon="@drawable/ic_stop_white"
+                        app:iconGravity="textStart"
+                        app:cornerRadius="16dp"
+                        android:layout_marginHorizontal="8dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Quick Navigation -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginTop="8dp">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_nav_history"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    style="@style/CardView.Styled"
+                    android:clickable="true"
+                    android:focusable="true">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_history"
+                            app:tint="@color/primary"
+                            android:contentDescription="History" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="History"
+                            android:layout_marginTop="8dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_primary" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_nav_settings"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    style="@style/CardView.Styled"
+                    android:clickable="true"
+                    android:focusable="true">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_settings"
+                            app:tint="@color/primary"
+                            android:contentDescription="Settings" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Settings"
+                            android:layout_marginTop="8dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_primary" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- Note Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/CardView.Styled"
+                app:cardBackgroundColor="@color/primary_container"
+                android:layout_marginTop="16dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Note"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="GeoTrack is running in the background to fetch locations at the selected interval and store them securely."
+                        android:textColor="@color/text_secondary"
+                        android:textSize="13sp"
+                        android:layout_marginTop="4dp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

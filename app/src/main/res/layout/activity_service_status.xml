@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="false">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        android:fitsSystemWindows="true">
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar_status"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginTop="4dp"
+            android:background="@color/primary"
+            app:title="Service Status"
+            app:titleTextColor="@color/white"
+            app:navigationIconTint="@color/white" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:fillViewport="true"
+        android:focusable="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:focusable="false">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_status_bg"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="6dp"
+                app:cardBackgroundColor="@color/green"
+                android:focusable="false"
+                android:clickable="false">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:padding="16dp"
+                    android:focusable="false">
+
+                    <ImageView
+                        android:layout_width="101dp"
+                        android:layout_height="88dp"
+                        android:alpha="0.9"
+                        android:focusable="false"
+                        android:src="@drawable/logo_transparent" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="start"
+                        android:layout_marginStart="16dp"
+                        android:focusable="false">
+
+                        <TextView
+                            android:id="@+id/tv_status_main"
+                            android:layout_width="93dp"
+                            android:layout_height="41dp"
+                            android:focusable="false"
+                            android:text="Active"
+                            android:textColor="@color/white"
+                            android:textSize="28sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/tv_status_desc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Running in Foreground Service"
+                            android:textColor="@color/white"
+                            android:textSize="13sp"
+                            android:alpha="0.9"
+                            android:focusable="false" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:layout_marginTop="16dp"
+                android:focusable="false">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    style="@style/CardView.Styled"
+                    android:focusable="false"
+                    android:clickable="false">
+                    <LinearLayout android:padding="16dp" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content" android:focusable="false">
+                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_location" app:tint="@color/primary" android:focusable="false" />
+                        <TextView android:text="Current Coordinates" android:textSize="10sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:focusable="false" />
+                        <TextView android:id="@+id/tv_status_coords" android:text="37.4220, -122.0840" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="13sp" android:focusable="false" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    style="@style/CardView.Styled"
+                    android:focusable="false"
+                    android:clickable="false">
+                    <LinearLayout android:padding="16dp" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content" android:focusable="false">
+                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_history" app:tint="@color/primary" android:focusable="false" />
+                        <TextView android:text="Last Sync Time" android:textSize="10sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:focusable="false" />
+                        <TextView android:id="@+id/tv_status_sync" android:text="22 Jun 2026, 02:36 PM" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="13sp" android:focusable="false" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_status_freq"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:clickable="true"
+                    android:focusable="false"
+                    style="@style/CardView.Styled">
+                    <RelativeLayout android:padding="16dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:focusable="false">
+                        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:layout_alignParentStart="true" android:layout_toStartOf="@id/iv_chevron_freq" android:focusable="false">
+                            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_history" app:tint="@color/primary" android:focusable="false" />
+                            <TextView android:text="Tracking Frequency" android:textSize="10sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:focusable="false" />
+                            <TextView android:id="@+id/tv_status_freq" android:text="Every 5 Minutes" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="13sp" android:focusable="false" />
+                        </LinearLayout>
+                        <ImageView android:id="@+id/iv_chevron_freq" android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/secondary" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:focusable="false" />
+                    </RelativeLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_status_records"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:clickable="true"
+                    android:focusable="false"
+                    style="@style/CardView.Styled">
+                    <RelativeLayout android:padding="16dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:focusable="false">
+                        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:layout_alignParentStart="true" android:layout_toStartOf="@id/iv_chevron_records" android:focusable="false">
+                            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_location" app:tint="@color/primary" android:focusable="false" />
+                            <TextView android:text="Records Saved" android:textSize="10sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:focusable="false" />
+                            <TextView android:id="@+id/tv_status_saved" android:text="20" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="13sp" android:focusable="false" />
+                        </LinearLayout>
+                        <ImageView android:id="@+id/iv_chevron_records" android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_chevron_right" app:tint="@color/secondary" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:focusable="false" />
+                    </RelativeLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+            </GridLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/CardView.Styled"
+                android:focusable="false"
+                android:clickable="false">
+                <RelativeLayout android:padding="16dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:focusable="false">
+                    <ImageView android:id="@+id/iv_run_icon" android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_history" app:tint="@color/primary" android:focusable="false" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Service Runtime" android:layout_toEndOf="@id/iv_run_icon" android:layout_marginStart="12dp" android:textSize="14sp" android:focusable="false" />
+                    <TextView android:id="@+id/tv_status_runtime" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="00:00:00" android:textStyle="bold" android:layout_alignParentEnd="true" android:textSize="14sp" android:focusable="false" />
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:focusable="false">
+
+                <!-- Pause/Resume Toggle -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_status_pause_resume"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:minWidth="120dp"
+                    android:text="Pause"
+                    android:layout_margin="8dp"
+                    style="@style/Widget.Material3.Button.ElevatedButton"
+                    app:icon="@drawable/ic_pause_white"
+                    app:iconGravity="textStart"
+                    app:cornerRadius="30dp"
+                    android:paddingHorizontal="24dp"
+                    android:focusable="false" />
+
+                <!-- Stop Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_status_stop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:minWidth="120dp"
+                    android:text="Stop"
+                    android:layout_margin="8dp"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:textColor="@color/error"
+                    app:icon="@drawable/ic_location"
+                    app:iconGravity="textStart"
+                    app:iconTint="@color/error"
+                    app:strokeColor="@color/error"
+                    app:cornerRadius="30dp"
+                    android:paddingHorizontal="24dp"
+                    android:focusable="false" />
+            </LinearLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/CardView.Styled"
+                app:cardBackgroundColor="@color/primary_container"
+                android:focusable="false"
+                android:clickable="false">
+                <LinearLayout android:padding="16dp" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content" android:focusable="false">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Note" android:textStyle="bold" android:focusable="false" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="GeoTrack is running in the background to fetch locations at the selected interval and store them securely." android:textSize="12sp" android:focusable="false" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical"
+    android:scrollbarThumbVertical="@color/primary"
+    android:scrollbarSize="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:paddingBottom="32dp"
+        android:clipToPadding="false">
+
+        <!-- Interval Selection -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/CardView.Styled">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <ImageView android:id="@+id/iv_int_icon" android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_history" app:tint="@color/primary" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tracking Interval" android:textStyle="bold" android:textSize="16sp" android:layout_toEndOf="@id/iv_int_icon" android:layout_marginStart="12dp" />
+                </RelativeLayout>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Choose how often location will be fetched" android:textSize="12sp" android:layout_marginStart="36dp" />
+
+                <RadioGroup
+                    android:id="@+id/rg_interval"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="24dp"
+                    android:focusable="false">
+                    <RadioButton android:id="@+id/rb_5" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Every 5 Minutes" />
+                    <RadioButton android:id="@+id/rb_10" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Every 10 Minutes" />
+                    <RadioButton android:id="@+id/rb_15" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Every 15 Minutes" />
+                    <RadioButton android:id="@+id/rb_30" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Every 30 Minutes" />
+                    <RadioButton android:id="@+id/rb_custom" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Custom" />
+                </RadioGroup>
+
+                <LinearLayout
+                    android:id="@+id/ll_custom_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="36dp"
+                    android:gravity="center_vertical"
+                    android:visibility="gone">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="Value"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_custom_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:hint="Unit"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+                        <AutoCompleteTextView
+                            android:id="@+id/spinner_unit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:textSize="14sp"
+                            android:padding="0dp"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_interval_actions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="36dp"
+                    android:visibility="gone">
+                    <Button
+                        android:id="@+id/btn_interval_save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Save"
+                        style="@style/Widget.Material3.Button" />
+                    <Button
+                        android:id="@+id/btn_interval_cancel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="Cancel"
+                        style="@style/Widget.Material3.Button.TextButton" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Preferences -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/CardView.Styled">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <ImageView android:id="@+id/iv_pref_icon" android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_settings" app:tint="@color/primary" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Preferences" android:textStyle="bold" android:textSize="16sp" android:layout_toEndOf="@id/iv_pref_icon" android:layout_marginStart="12dp" />
+                </RelativeLayout>
+
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:layout_marginStart="36dp">
+                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:layout_toStartOf="@id/switch_toast" android:layout_alignParentStart="true">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Show Toast Notification" android:textStyle="bold" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Show a toast message on each update" android:textSize="10sp" />
+                    </LinearLayout>
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/switch_toast"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true" />
+                </RelativeLayout>
+
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:layout_marginStart="36dp">
+                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:layout_toStartOf="@id/switch_auto_start" android:layout_alignParentStart="true">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Auto Start After Device Reboot" android:textStyle="bold" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Automatically start tracking after reboot" android:textSize="10sp" />
+                    </LinearLayout>
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/switch_auto_start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true" />
+                </RelativeLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Permission Status -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_permissions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/CardView.Styled"
+            android:clickable="true"
+            android:focusable="false">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <ImageView android:id="@+id/iv_perm_icon" android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_location" app:tint="@color/primary" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Permission Status" android:textStyle="bold" android:textSize="16sp" android:layout_toEndOf="@id/iv_perm_icon" android:layout_marginStart="12dp" />
+                </RelativeLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="16dp" android:layout_marginStart="36dp">
+                    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Location Permission" />
+                        <TextView android:id="@+id/tv_perm_loc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Granted" android:textColor="@color/success" android:layout_alignParentEnd="true" />
+                    </RelativeLayout>
+                    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Background Location" />
+                        <TextView android:id="@+id/tv_perm_bg" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Granted" android:textColor="@color/success" android:layout_alignParentEnd="true" />
+                    </RelativeLayout>
+                    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Notification Permission" />
+                        <TextView android:id="@+id/tv_perm_notif" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Granted" android:textColor="@color/success" android:layout_alignParentEnd="true" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Battery Optimization -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_battery_optimization"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/CardView.Styled"
+            android:clickable="true"
+            android:focusable="false">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <ImageView android:id="@+id/iv_batt_icon" android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_settings" app:tint="@color/primary" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Battery Optimization" android:textStyle="bold" android:textSize="16sp" android:layout_toEndOf="@id/iv_batt_icon" android:layout_marginStart="12dp" />
+                </RelativeLayout>
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:layout_marginStart="36dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Optimization Status" />
+                    <TextView android:id="@+id/tv_battery_status" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Optimized" android:textColor="@color/error" android:layout_alignParentEnd="true" />
+                </RelativeLayout>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Click here to change battery optimization to unrestricted for better background performance." android:textSize="10sp" android:layout_marginStart="36dp" android:layout_marginTop="4dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Data Management -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/CardView.Styled">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <ImageView android:id="@+id/iv_data_icon" android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_history" app:tint="@color/primary" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Data Management" android:textStyle="bold" android:textSize="16sp" android:layout_toEndOf="@id/iv_data_icon" android:layout_marginStart="12dp" />
+                </RelativeLayout>
+
+                <Button
+                    android:id="@+id/btn_reset_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Reset All Tracked Data"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:textColor="@color/error"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="36dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <Button
+            android:id="@+id/btn_exit_app"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Exit Application"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:textColor="@color/error"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginBottom="32dp" />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

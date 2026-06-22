@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:color/transparent">
+
+    <!-- STATS ROW (Visible in Collapsed) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="4"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:paddingHorizontal="4dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Latitude"
+                android:textSize="11sp"
+                android:textColor="@color/notif_text_secondary"
+                android:forceDarkAllowed="false" />
+            <TextView
+                android:id="@+id/tvLat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="--.----"
+                android:textSize="13sp"
+                android:textStyle="normal"
+                android:textColor="@color/notif_text_primary"
+                android:forceDarkAllowed="false" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:paddingHorizontal="4dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Longitude"
+                android:textSize="11sp"
+                android:textColor="@color/notif_text_secondary"
+                android:forceDarkAllowed="false" />
+            <TextView
+                android:id="@+id/tvLng"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="--.----"
+                android:textSize="13sp"
+                android:textStyle="normal"
+                android:textColor="@color/notif_text_primary"
+                android:forceDarkAllowed="false" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:paddingHorizontal="4dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Updated"
+                android:textSize="11sp"
+                android:textColor="@color/notif_text_secondary"
+                android:forceDarkAllowed="false" />
+            <TextView
+                android:id="@+id/tvUpdated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="--:--"
+                android:textSize="13sp"
+                android:textStyle="normal"
+                android:textColor="@color/notif_text_primary"
+                android:forceDarkAllowed="false" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:paddingHorizontal="4dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Interval"
+                android:textSize="11sp"
+                android:textColor="@color/notif_text_secondary"
+                android:forceDarkAllowed="false" />
+            <TextView
+                android:id="@+id/tvInterval"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-- Min"
+                android:textSize="13sp"
+                android:textStyle="normal"
+                android:textColor="@color/notif_text_primary"
+                android:forceDarkAllowed="false" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
