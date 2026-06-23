@@ -14,6 +14,7 @@ import android.location.Location;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.Looper;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -43,6 +44,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class LocationTrackingService extends Service {
+    private static final String TAG = "LocationTrackingService";
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
     private PreferenceManager preferenceManager;
@@ -67,7 +69,9 @@ public class LocationTrackingService extends Service {
         try {
             IntentFilter filter = new IntentFilter(android.location.LocationManager.PROVIDERS_CHANGED_ACTION);
             ContextCompat.registerReceiver(this, locationProviderReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
-        } catch (Exception ignored) {}
+        } catch (Exception e) {
+            Log.e(TAG, "Error registering locationProviderReceiver", e);
+        }
     }
 
     private void saveIncrementalRuntime() {
@@ -110,10 +114,14 @@ public class LocationTrackingService extends Service {
                 now
         );
         executorService.execute(() -> {
-            database.locationDao().insertLocation(entity);
-            // Broadcast intent to update UI instantly if needed
-            Intent updateIntent = new Intent(Constants.ACTION_LOCATION_UPDATED);
-            sendBroadcast(updateIntent);
+            try {
+                database.locationDao().insertLocation(entity);
+                // Broadcast intent to update UI instantly if needed
+                Intent updateIntent = new Intent(Constants.ACTION_LOCATION_UPDATED);
+                sendBroadcast(updateIntent);
+            } catch (Exception e) {
+                Log.e(TAG, "Failed to save location to database", e);
+            }
         });
     }
 
@@ -300,7 +308,9 @@ public class LocationTrackingService extends Service {
         updateTotalRuntime();
         try {
             unregisterReceiver(locationProviderReceiver);
-        } catch (Exception ignored) {}
+        } catch (Exception e) {
+            Log.e(TAG, "Error unregistering locationProviderReceiver", e);
+        }
         super.onDestroy();
         executorService.shutdown();
     }

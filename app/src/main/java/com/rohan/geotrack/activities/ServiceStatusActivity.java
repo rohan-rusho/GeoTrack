@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.content.BroadcastReceiver;
@@ -27,6 +28,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class ServiceStatusActivity extends AppCompatActivity {
+    private static final String TAG = "ServiceStatusActivity";
     private PreferenceManager preferenceManager;
     private GeoTrackDatabase database;
     private TextView tvStatus, tvCoords, tvSync, tvFreq, tvSaved, tvRuntime;
@@ -187,15 +189,19 @@ public class ServiceStatusActivity extends AppCompatActivity {
         tvFreq.setText("Every " + formatInterval(preferenceManager.getTrackingInterval()));
 
         new Thread(() -> {
-            int count = database.locationDao().getLocationCount();
-            LocationEntity last = database.locationDao().getLatestLocation();
-            runOnUiThread(() -> {
-                tvSaved.setText(String.valueOf(count));
-                if (last != null) {
-                    tvCoords.setText(String.format(Locale.getDefault(), "%.4f, %.4f", last.getLatitude(), last.getLongitude()));
-                    tvSync.setText(new SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.getDefault()).format(new Date(last.getTimestamp())));
-                }
-            });
+            try {
+                int count = database.locationDao().getLocationCount();
+                LocationEntity last = database.locationDao().getLatestLocation();
+                runOnUiThread(() -> {
+                    tvSaved.setText(String.valueOf(count));
+                    if (last != null) {
+                        tvCoords.setText(String.format(Locale.getDefault(), "%.4f, %.4f", last.getLatitude(), last.getLongitude()));
+                        tvSync.setText(new SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.getDefault()).format(new Date(last.getTimestamp())));
+                    }
+                });
+            } catch (Exception e) {
+                Log.e(TAG, "Error fetching location stats", e);
+            }
         }).start();
     }
 

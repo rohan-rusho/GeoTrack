@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import java.util.Calendar;
 import java.util.List;
 
 public class HistoryFragment extends Fragment {
+    private static final String TAG = "HistoryFragment";
     private RecyclerView recyclerView;
     private HistoryAdapter adapter;
     private final List<LocationEntity> allLocations = new ArrayList<>();
@@ -124,25 +126,29 @@ public class HistoryFragment extends Fragment {
 
     private void filterData(String query) {
         new Thread(() -> {
-            List<LocationEntity> result = new ArrayList<>();
-            for (LocationEntity loc : allLocations) {
-                String date = new java.text.SimpleDateFormat("dd MMM yyyy", java.util.Locale.getDefault()).format(new java.util.Date(loc.getTimestamp()));
-                String time = new java.text.SimpleDateFormat("hh:mm:ss a", java.util.Locale.getDefault()).format(new java.util.Date(loc.getTimestamp()));
-                if (date.toLowerCase().contains(query.toLowerCase()) || time.toLowerCase().contains(query.toLowerCase())) {
-                    result.add(loc);
-                }
-            }
-            if (isAdded()) {
-                requireActivity().runOnUiThread(() -> {
-                    filteredLocations.clear();
-                    filteredLocations.addAll(result);
-                    if (adapter != null) {
-                        adapter.notifyDataSetChanged();
-                        if (recyclerView != null) {
-                            recyclerView.scheduleLayoutAnimation();
-                        }
+            try {
+                List<LocationEntity> result = new ArrayList<>();
+                for (LocationEntity loc : allLocations) {
+                    String date = new java.text.SimpleDateFormat("dd MMM yyyy", java.util.Locale.getDefault()).format(new java.util.Date(loc.getTimestamp()));
+                    String time = new java.text.SimpleDateFormat("hh:mm:ss a", java.util.Locale.getDefault()).format(new java.util.Date(loc.getTimestamp()));
+                    if (date.toLowerCase().contains(query.toLowerCase()) || time.toLowerCase().contains(query.toLowerCase())) {
+                        result.add(loc);
                     }
-                });
+                }
+                if (isAdded()) {
+                    requireActivity().runOnUiThread(() -> {
+                        filteredLocations.clear();
+                        filteredLocations.addAll(result);
+                        if (adapter != null) {
+                            adapter.notifyDataSetChanged();
+                            if (recyclerView != null) {
+                                recyclerView.scheduleLayoutAnimation();
+                            }
+                        }
+                    });
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Error filtering data", e);
             }
         }).start();
     }
