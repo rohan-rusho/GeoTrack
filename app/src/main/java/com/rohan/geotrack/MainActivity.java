@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .show();
     }
 
+
     private void checkBatteryOptimization() {
         android.os.PowerManager pm = (android.os.PowerManager) getSystemService(android.content.Context.POWER_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !pm.isIgnoringBatteryOptimizations(getPackageName())) {
