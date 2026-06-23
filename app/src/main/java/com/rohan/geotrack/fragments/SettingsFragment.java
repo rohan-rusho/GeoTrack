@@ -144,6 +144,7 @@ public class SettingsFragment extends Fragment {
                 .show();
     }
 
+
     private void saveIntervalSettings() {
         int interval = 300;
         int checkedId = rgInterval.getCheckedRadioButtonId();
