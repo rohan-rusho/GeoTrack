@@ -147,20 +147,49 @@ public class SettingsFragment extends Fragment {
     private void saveIntervalSettings() {
         int interval = 300;
         int checkedId = rgInterval.getCheckedRadioButtonId();
+        
+        // Reset errors
+        etCustomValue.setError(null);
+        spinnerUnit.setError(null);
+
         if (checkedId == R.id.rb_5) interval = 300;
         else if (checkedId == R.id.rb_10) interval = 600;
         else if (checkedId == R.id.rb_15) interval = 900;
         else if (checkedId == R.id.rb_30) interval = 1800;
         else if (checkedId == R.id.rb_custom) {
-            String valStr = etCustomValue.getText().toString();
-            if (!valStr.isEmpty()) {
+            String valStr = etCustomValue.getText() != null ? etCustomValue.getText().toString().trim() : "";
+            String unit = spinnerUnit.getText() != null ? spinnerUnit.getText().toString().trim() : "";
+            
+            boolean hasError = false;
+            
+            if (valStr.isEmpty()) {
+                etCustomValue.setError("Enter a value");
+                hasError = true;
+            }
+            
+            if (unit.isEmpty() || unit.equalsIgnoreCase("Unit")) {
+                spinnerUnit.setError("Select a unit");
+                hasError = true;
+            }
+            
+            if (hasError) return;
+
+            try {
                 int val = Integer.parseInt(valStr);
-                String unit = spinnerUnit.getText().toString();
+                if (val <= 0) {
+                    etCustomValue.setError("Value must be > 0");
+                    return;
+                }
+                
                 if (unit.equals("min")) val *= 60;
                 else if (unit.equals("hr")) val *= 3600;
                 interval = val;
+            } catch (NumberFormatException e) {
+                etCustomValue.setError("Invalid number");
+                return;
             }
         }
+
         preferenceManager.setTrackingInterval(interval);
         preferenceManager.setLastSaveTime(System.currentTimeMillis());
         
