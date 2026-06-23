@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ import com.rohan.geotrack.database.GeoTrackDatabase;
 import com.rohan.geotrack.utils.PreferenceManager;
 
 public class SettingsFragment extends Fragment {
+    private static final String TAG = "SettingsFragment";
     private PreferenceManager preferenceManager;
     private RadioGroup rgInterval;
     private TextInputEditText etCustomValue;
@@ -123,10 +125,19 @@ public class SettingsFragment extends Fragment {
                 .setMessage("Are you sure you want to delete all tracked location history? This action cannot be undone.")
                 .setPositiveButton("Reset", (dialog, which) -> {
                     new Thread(() -> {
-                        GeoTrackDatabase.getInstance(requireContext()).locationDao().deleteAllLocations();
-                        requireActivity().runOnUiThread(() -> {
-                            Toast.makeText(requireContext(), "All data deleted", Toast.LENGTH_SHORT).show();
-                        });
+                        try {
+                            GeoTrackDatabase.getInstance(requireContext()).locationDao().deleteAllLocations();
+                            requireActivity().runOnUiThread(() -> {
+                                Toast.makeText(requireContext(), "All data deleted", Toast.LENGTH_SHORT).show();
+                            });
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error deleting all locations", e);
+                            if (isAdded()) {
+                                requireActivity().runOnUiThread(() -> 
+                                    Toast.makeText(requireContext(), "Failed to delete data", Toast.LENGTH_SHORT).show()
+                                );
+                            }
+                        }
                     }).start();
                 })
                 .setNegativeButton("Cancel", null)
