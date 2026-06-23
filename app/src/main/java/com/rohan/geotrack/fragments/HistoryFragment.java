@@ -28,8 +28,8 @@ import java.util.List;
 public class HistoryFragment extends Fragment {
     private RecyclerView recyclerView;
     private HistoryAdapter adapter;
-    private List<LocationEntity> allLocations = new ArrayList<>();
-    private List<LocationEntity> filteredLocations = new ArrayList<>();
+    private final List<LocationEntity> allLocations = new ArrayList<>();
+    private final List<LocationEntity> filteredLocations = new ArrayList<>();
     private GeoTrackDatabase database;
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final Runnable timeRefreshRunnable = new Runnable() {

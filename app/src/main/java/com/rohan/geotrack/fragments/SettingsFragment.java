@@ -170,21 +170,19 @@ public class SettingsFragment extends Fragment {
     }
 
     private void openBatteryOptimizationSettings() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            PowerManager pm = (PowerManager) requireContext().getSystemService(Context.POWER_SERVICE);
-            if (pm.isIgnoringBatteryOptimizations(requireContext().getPackageName())) {
-                Toast.makeText(requireContext(), "Already unrestricted", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            Intent intent = new Intent();
-            try {
-                intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-                intent.setData(Uri.parse("package:" + requireContext().getPackageName()));
-                startActivity(intent);
-            } catch (Exception e) {
-                intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
-                startActivity(intent);
-            }
+        PowerManager pm = (PowerManager) requireContext().getSystemService(Context.POWER_SERVICE);
+        if (pm.isIgnoringBatteryOptimizations(requireContext().getPackageName())) {
+            Toast.makeText(requireContext(), "Already unrestricted", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Intent intent = new Intent();
+        try {
+            intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+            intent.setData(Uri.parse("package:" + requireContext().getPackageName()));
+            startActivity(intent);
+        } catch (Exception e) {
+            intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+            startActivity(intent);
         }
     }
 

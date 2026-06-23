@@ -6,7 +6,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -69,7 +68,7 @@ public class LocationTrackingService extends Service {
         try {
             IntentFilter filter = new IntentFilter(android.location.LocationManager.PROVIDERS_CHANGED_ACTION);
             ContextCompat.registerReceiver(this, locationProviderReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
     }
 
     private void saveIncrementalRuntime() {
@@ -302,7 +301,7 @@ public class LocationTrackingService extends Service {
         updateTotalRuntime();
         try {
             unregisterReceiver(locationProviderReceiver);
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
         super.onDestroy();
         executorService.shutdown();
     }

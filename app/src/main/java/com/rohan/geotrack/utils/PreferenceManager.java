@@ -2,19 +2,12 @@ package com.rohan.geotrack.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 
 public class PreferenceManager {
     private final SharedPreferences sharedPreferences;
 
     public PreferenceManager(Context context) {
-        Context storageContext;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            storageContext = context.createDeviceProtectedStorageContext();
-        } else {
-            storageContext = context;
-        }
-        sharedPreferences = storageContext.getSharedPreferences(Constants.PREF_NAME, Context.MODE_PRIVATE);
+        sharedPreferences = context.createDeviceProtectedStorageContext().getSharedPreferences(Constants.PREF_NAME, Context.MODE_PRIVATE);
     }
 
     public void setTrackingInterval(int seconds) {

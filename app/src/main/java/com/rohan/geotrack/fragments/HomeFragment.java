@@ -83,13 +83,19 @@ public class HomeFragment extends Fragment {
         v.findViewById(R.id.card_status).setOnClickListener(v1 -> startActivity(new Intent(requireContext(), ServiceStatusActivity.class)));
         
         v.findViewById(R.id.card_nav_history).setOnClickListener(v1 -> {
-            ViewPager2 vp = getActivity().findViewById(R.id.view_pager);
-            if (vp != null) vp.setCurrentItem(1);
+            androidx.fragment.app.FragmentActivity activity = getActivity();
+            if (activity != null) {
+                ViewPager2 vp = activity.findViewById(R.id.view_pager);
+                if (vp != null) vp.setCurrentItem(1);
+            }
         });
         
         v.findViewById(R.id.card_nav_settings).setOnClickListener(v1 -> {
-            ViewPager2 vp = getActivity().findViewById(R.id.view_pager);
-            if (vp != null) vp.setCurrentItem(2);
+            androidx.fragment.app.FragmentActivity activity = getActivity();
+            if (activity != null) {
+                ViewPager2 vp = activity.findViewById(R.id.view_pager);
+                if (vp != null) vp.setCurrentItem(2);
+            }
         });
 
         // Listen for tracking state changes from other activities
@@ -181,10 +187,10 @@ public class HomeFragment extends Fragment {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                if (preferenceManager.isTracking()) {
-                    long lastSave = preferenceManager.getLastSaveTime();
-                    if (lastSave == 0) lastSave = System.currentTimeMillis();
-                    long millis = System.currentTimeMillis() - lastSave;
+                if (preferenceManager.isTracking() && !preferenceManager.isPaused()) {
+                    long startTime = preferenceManager.getServiceStartTime();
+                    if (startTime == 0) startTime = System.currentTimeMillis();
+                    long millis = System.currentTimeMillis() - startTime;
 
                     int seconds = (int) (millis / 1000);
                     int minutes = seconds / 60;
@@ -192,6 +198,8 @@ public class HomeFragment extends Fragment {
                     seconds %= 60;
                     minutes %= 60;
                     tvRuntime.setText(String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds));
+                } else if (preferenceManager.isTracking() && preferenceManager.isPaused()) {
+                    // Stay at current value
                 } else {
                     tvRuntime.setText("00:00:00");
                 }
@@ -272,8 +280,11 @@ public class HomeFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         handler.removeCallbacksAndMessages(null);
-        try {
-            requireContext().unregisterReceiver(trackingReceiver);
-        } catch (Exception e) {}
+        Context context = getContext();
+        if (context != null) {
+            try {
+                context.unregisterReceiver(trackingReceiver);
+            } catch (Exception ignored) {}
+        }
     }
 }

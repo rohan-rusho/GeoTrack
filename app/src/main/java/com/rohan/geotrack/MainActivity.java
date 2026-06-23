@@ -111,10 +111,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void checkBatteryOptimization() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            android.os.PowerManager pm = (android.os.PowerManager) getSystemService(android.content.Context.POWER_SERVICE);
-            if (!pm.isIgnoringBatteryOptimizations(getPackageName())) {
-                new androidx.appcompat.app.AlertDialog.Builder(this)
+        android.os.PowerManager pm = (android.os.PowerManager) getSystemService(android.content.Context.POWER_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !pm.isIgnoringBatteryOptimizations(getPackageName())) {
+            new androidx.appcompat.app.AlertDialog.Builder(this)
                         .setTitle("Battery Optimization")
                         .setMessage("GeoTrack needs unrestricted battery access to ensure reliable background tracking. Please allow this in the next screen.")
                         .setPositiveButton("Allow", (dialog, which) -> {
@@ -125,7 +124,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         })
                         .setNegativeButton("Later", null)
                         .show();
-            }
         }
     }
 
@@ -168,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             exitItem.setTitle(s);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 exitItem.setIconTintList(android.content.res.ColorStateList.valueOf(Color.RED));
-            } else {
+            } else if (exitItem.getIcon() != null) {
                 androidx.core.graphics.drawable.DrawableCompat.setTint(exitItem.getIcon(), Color.RED);
             }
         }

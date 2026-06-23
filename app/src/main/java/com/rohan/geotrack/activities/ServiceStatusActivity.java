@@ -68,13 +68,13 @@ public class ServiceStatusActivity extends AppCompatActivity {
     };
 
     private void updateRuntimeDisplay() {
-        if (preferenceManager.isTracking()) {
-            long lastSave = preferenceManager.getLastSaveTime();
-            if (lastSave != 0) {
-                long displayRuntime = System.currentTimeMillis() - lastSave;
+        if (preferenceManager.isTracking() && !preferenceManager.isPaused()) {
+            long startTime = preferenceManager.getServiceStartTime();
+            if (startTime != 0) {
+                long displayRuntime = System.currentTimeMillis() - startTime;
                 tvRuntime.setText(formatDuration(displayRuntime));
             }
-        } else {
+        } else if (!preferenceManager.isTracking()) {
             tvRuntime.setText("00:00:00");
         }
     }
@@ -85,7 +85,7 @@ public class ServiceStatusActivity extends AppCompatActivity {
         handler.removeCallbacks(runtimeUpdater);
         try {
             unregisterReceiver(trackingReceiver);
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
     }
 
     private void setupToolbar() {
