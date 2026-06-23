@@ -11,8 +11,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Build;
 import android.os.Handler;
@@ -67,6 +65,11 @@ public class LocationTrackingService extends Service {
 
         createNotificationChannel();
         setupLocationCallback();
+
+        try {
+            IntentFilter filter = new IntentFilter(android.location.LocationManager.PROVIDERS_CHANGED_ACTION);
+            ContextCompat.registerReceiver(this, locationProviderReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
+        } catch (Exception e) {}
     }
 
     private void saveIncrementalRuntime() {
@@ -111,7 +114,7 @@ public class LocationTrackingService extends Service {
         executorService.execute(() -> {
             database.locationDao().insertLocation(entity);
             // Broadcast intent to update UI instantly if needed
-            Intent updateIntent = new Intent("com.rohan.geotrack.LOCATION_UPDATED");
+            Intent updateIntent = new Intent(Constants.ACTION_LOCATION_UPDATED);
             sendBroadcast(updateIntent);
         });
     }
@@ -137,11 +140,6 @@ public class LocationTrackingService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        try {
-            IntentFilter filter = new IntentFilter(android.location.LocationManager.PROVIDERS_CHANGED_ACTION);
-            ContextCompat.registerReceiver(this, locationProviderReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
-        } catch (Exception e) {}
-
         if (intent != null) {
             String action = intent.getAction();
             if (Constants.ACTION_STOP_TRACKING.equals(action)) {
@@ -182,7 +180,7 @@ public class LocationTrackingService extends Service {
     }
 
     private void broadcastStateChange() {
-        Intent intent = new Intent("com.rohan.geotrack.TRACKING_STATE_CHANGED");
+        Intent intent = new Intent(Constants.ACTION_TRACKING_STATE_CHANGED);
         intent.setPackage(getPackageName());
         sendBroadcast(intent);
     }
@@ -214,9 +212,6 @@ public class LocationTrackingService extends Service {
     }
 
     private void stopTracking() {
-        try {
-            unregisterReceiver(locationProviderReceiver);
-        } catch (Exception e) {}
         fusedLocationClient.removeLocationUpdates(locationCallback);
         preferenceManager.setTracking(false);
         preferenceManager.setLastSaveTime(0);
@@ -240,9 +235,9 @@ public class LocationTrackingService extends Service {
         RemoteViews expandedView = new RemoteViews(getPackageName(), R.layout.notification_tracking);
 
         if (location != null) {
-            String lat = String.format(Locale.getDefault(), "%.4f", location.getLatitude());
-            String lng = String.format(Locale.getDefault(), "%.4f", location.getLongitude());
-            String time = formatTime(location.getTime());
+            String lat = String.format(Locale.getDefault(), "%.2f", location.getLatitude());
+            String lng = String.format(Locale.getDefault(), "%.2f", location.getLongitude());
+            String time = formatTimeShort(location.getTime());
 
             collapsedView.setTextViewText(R.id.tvLat, lat);
             collapsedView.setTextViewText(R.id.tvLng, lng);
@@ -284,15 +279,16 @@ public class LocationTrackingService extends Service {
     }
 
     private String formatIntervalString(int seconds) {
-        if (seconds < 60) return seconds + " Sec";
+        if (seconds < 60) return seconds + "s";
         int mins = seconds / 60;
-        if (mins < 60) return mins + " Min";
+        if (mins < 60) return mins + "m";
         int hrs = mins / 60;
-        return hrs + " Hr";
+        return hrs + "h";
     }
 
-    private String formatTime(long timestamp) {
-        return new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date(timestamp));
+    private String formatTimeShort(long timestamp) {
+        String time = new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date(timestamp));
+        return time.replace(" AM", "am").replace(" PM", "pm");
     }
 
     @Nullable
@@ -304,6 +300,9 @@ public class LocationTrackingService extends Service {
     @Override
     public void onDestroy() {
         updateTotalRuntime();
+        try {
+            unregisterReceiver(locationProviderReceiver);
+        } catch (Exception e) {}
         super.onDestroy();
         executorService.shutdown();
     }

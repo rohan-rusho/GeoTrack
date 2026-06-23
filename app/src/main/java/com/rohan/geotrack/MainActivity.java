@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void autoStartTrackingIfFirstRun() {
-        if (preferenceManager.isFirstRun() || !preferenceManager.isTracking()) {
+        if (preferenceManager.isFirstRun() || (preferenceManager.isAutoStart() && !preferenceManager.isTracking())) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 
                 android.location.LocationManager lm = (android.location.LocationManager) getSystemService(android.content.Context.LOCATION_SERVICE);

@@ -93,7 +93,7 @@ public class HomeFragment extends Fragment {
         });
 
         // Listen for tracking state changes from other activities
-        IntentFilter filter = new IntentFilter("com.rohan.geotrack.TRACKING_STATE_CHANGED");
+        IntentFilter filter = new IntentFilter(Constants.ACTION_TRACKING_STATE_CHANGED);
         ContextCompat.registerReceiver(requireContext(), trackingReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
@@ -142,7 +142,7 @@ public class HomeFragment extends Fragment {
         requireContext().startService(intent);
 
         // Notify other UI components
-        Intent broadcastIntent = new Intent("com.rohan.geotrack.TRACKING_STATE_CHANGED");
+        Intent broadcastIntent = new Intent(Constants.ACTION_TRACKING_STATE_CHANGED);
         broadcastIntent.setPackage(requireContext().getPackageName());
         requireContext().sendBroadcast(broadcastIntent);
     }
@@ -244,7 +244,7 @@ public class HomeFragment extends Fragment {
         }
         updateUI();
         // Notify other components
-        Intent startIntent = new Intent("com.rohan.geotrack.TRACKING_STATE_CHANGED");
+        Intent startIntent = new Intent(Constants.ACTION_TRACKING_STATE_CHANGED);
         startIntent.setPackage(requireContext().getPackageName());
         requireContext().sendBroadcast(startIntent);
     }
@@ -256,7 +256,7 @@ public class HomeFragment extends Fragment {
         requireContext().startService(intent);
         updateUI();
         // Notify other components
-        Intent stopIntent = new Intent("com.rohan.geotrack.TRACKING_STATE_CHANGED");
+        Intent stopIntent = new Intent(Constants.ACTION_TRACKING_STATE_CHANGED);
         stopIntent.setPackage(requireContext().getPackageName());
         requireContext().sendBroadcast(stopIntent);
     }

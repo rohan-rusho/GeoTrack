@@ -313,7 +313,7 @@
                 android:layout_marginTop="16dp">
 
                 <!-- Start Button (Initial State) -->
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_main_start"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
@@ -335,7 +335,7 @@
                     android:weightSum="2"
                     android:visibility="gone">
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_main_pause_resume"
                         android:layout_width="0dp"
                         android:layout_height="64dp"
@@ -348,7 +348,7 @@
                         app:cornerRadius="16dp"
                         android:layout_marginHorizontal="8dp" />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_main_stop"
                         android:layout_width="0dp"
                         android:layout_height="64dp"

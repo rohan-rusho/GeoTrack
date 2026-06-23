@@ -7,6 +7,11 @@ public class Constants {
     public static final String KEY_SHOW_TOAST = "show_toast";
     public static final String KEY_AUTO_START = "auto_start";
     public static final String KEY_IS_TRACKING = "is_tracking";
+    public static final String KEY_IS_PAUSED = "is_paused";
+    public static final String KEY_SERVICE_START_TIME = "service_start_time";
+    public static final String KEY_TOTAL_RUNTIME = "total_runtime";
+    public static final String KEY_LAST_SAVE_TIME = "last_save_time";
+    public static final String KEY_IS_FIRST_RUN = "is_first_run";
 
     // Default Values
     public static final int DEFAULT_INTERVAL = 300; // 5 Minutes in seconds
@@ -20,8 +25,9 @@ public class Constants {
 
     // Intent Actions
     public static final String ACTION_STOP_TRACKING = "com.rohan.geotrack.STOP_TRACKING";
-    public static final String ACTION_START_TRACKING = "com.rohan.geotrack.START_TRACKING";
     public static final String ACTION_PAUSE_TRACKING = "com.rohan.geotrack.PAUSE_TRACKING";
     public static final String ACTION_RESUME_TRACKING = "com.rohan.geotrack.RESUME_TRACKING";
     public static final String ACTION_UPDATE_INTERVAL = "com.rohan.geotrack.UPDATE_INTERVAL";
+    public static final String ACTION_TRACKING_STATE_CHANGED = "com.rohan.geotrack.TRACKING_STATE_CHANGED";
+    public static final String ACTION_LOCATION_UPDATED = "com.rohan.geotrack.LOCATION_UPDATED";
 }

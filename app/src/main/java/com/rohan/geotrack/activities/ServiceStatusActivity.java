@@ -24,7 +24,6 @@ import com.rohan.geotrack.utils.PreferenceManager;
 import com.rohan.geotrack.utils.UIUtils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 public class ServiceStatusActivity extends AppCompatActivity {
@@ -55,7 +54,9 @@ public class ServiceStatusActivity extends AppCompatActivity {
         updateUI();
         handler.post(runtimeUpdater);
 
-        IntentFilter filter = new IntentFilter("com.rohan.geotrack.TRACKING_STATE_CHANGED");
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constants.ACTION_TRACKING_STATE_CHANGED);
+        filter.addAction(Constants.ACTION_LOCATION_UPDATED);
         ContextCompat.registerReceiver(this, trackingReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
@@ -150,7 +151,7 @@ public class ServiceStatusActivity extends AppCompatActivity {
     }
 
     private void broadcastStateChange() {
-        Intent updateIntent = new Intent("com.rohan.geotrack.TRACKING_STATE_CHANGED");
+        Intent updateIntent = new Intent(Constants.ACTION_TRACKING_STATE_CHANGED);
         updateIntent.setPackage(getPackageName());
         sendBroadcast(updateIntent);
     }
@@ -185,22 +186,12 @@ public class ServiceStatusActivity extends AppCompatActivity {
 
         tvFreq.setText("Every " + formatInterval(preferenceManager.getTrackingInterval()));
 
-        if (isTracking) {
-            long lastSave = preferenceManager.getLastSaveTime();
-            if (lastSave != 0) {
-                long runtime = System.currentTimeMillis() - lastSave;
-                tvRuntime.setText(formatDuration(runtime));
-            }
-        } else {
-            tvRuntime.setText(formatDuration(0));
-        }
-
         new Thread(() -> {
-            List<LocationEntity> locations = database.locationDao().getAllLocations();
+            int count = database.locationDao().getLocationCount();
+            LocationEntity last = database.locationDao().getLatestLocation();
             runOnUiThread(() -> {
-                tvSaved.setText(String.valueOf(locations.size()));
-                if (!locations.isEmpty()) {
-                    LocationEntity last = locations.get(0);
+                tvSaved.setText(String.valueOf(count));
+                if (last != null) {
                     tvCoords.setText(String.format(Locale.getDefault(), "%.4f, %.4f", last.getLatitude(), last.getLongitude()));
                     tvSync.setText(new SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.getDefault()).format(new Date(last.getTimestamp())));
                 }

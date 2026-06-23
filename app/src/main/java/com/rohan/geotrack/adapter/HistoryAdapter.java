@@ -65,12 +65,16 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             long minutes = seconds / 60;
             long hours = minutes / 60;
             long days = hours / 24;
+            long months = days / 30;
+            long years = days / 365;
 
             String timeAgo;
             if (seconds < 60) timeAgo = "Just now";
             else if (minutes < 60) timeAgo = minutes + "m ago";
             else if (hours < 24) timeAgo = hours + "h ago";
-            else timeAgo = days + "d ago";
+            else if (days < 30) timeAgo = days + "d ago";
+            else if (months < 12) timeAgo = months + "mo ago";
+            else timeAgo = years + "y ago";
 
             tvAccuracy.setText(timeAgo);
             

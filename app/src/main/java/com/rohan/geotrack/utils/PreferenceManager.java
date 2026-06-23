@@ -50,42 +50,42 @@ public class PreferenceManager {
     }
 
     public void setPaused(boolean paused) {
-        sharedPreferences.edit().putBoolean("is_paused", paused).apply();
+        sharedPreferences.edit().putBoolean(Constants.KEY_IS_PAUSED, paused).apply();
     }
 
     public boolean isPaused() {
-        return sharedPreferences.getBoolean("is_paused", false);
+        return sharedPreferences.getBoolean(Constants.KEY_IS_PAUSED, false);
     }
 
     public void setServiceStartTime(long startTime) {
-        sharedPreferences.edit().putLong("service_start_time", startTime).apply();
+        sharedPreferences.edit().putLong(Constants.KEY_SERVICE_START_TIME, startTime).apply();
     }
 
     public long getServiceStartTime() {
-        return sharedPreferences.getLong("service_start_time", 0);
+        return sharedPreferences.getLong(Constants.KEY_SERVICE_START_TIME, 0);
     }
 
     public void setTotalRuntime(long runtime) {
-        sharedPreferences.edit().putLong("total_runtime", runtime).apply();
+        sharedPreferences.edit().putLong(Constants.KEY_TOTAL_RUNTIME, runtime).apply();
     }
 
     public long getTotalRuntime() {
-        return sharedPreferences.getLong("total_runtime", 0);
+        return sharedPreferences.getLong(Constants.KEY_TOTAL_RUNTIME, 0);
     }
 
     public void setLastSaveTime(long time) {
-        sharedPreferences.edit().putLong("last_save_time", time).apply();
+        sharedPreferences.edit().putLong(Constants.KEY_LAST_SAVE_TIME, time).apply();
     }
 
     public long getLastSaveTime() {
-        return sharedPreferences.getLong("last_save_time", 0);
+        return sharedPreferences.getLong(Constants.KEY_LAST_SAVE_TIME, 0);
     }
 
     public boolean isFirstRun() {
-        return sharedPreferences.getBoolean("is_first_run", true);
+        return sharedPreferences.getBoolean(Constants.KEY_IS_FIRST_RUN, true);
     }
 
     public void setFirstRun(boolean firstRun) {
-        sharedPreferences.edit().putBoolean("is_first_run", firstRun).apply();
+        sharedPreferences.edit().putBoolean(Constants.KEY_IS_FIRST_RUN, firstRun).apply();
     }
 }
