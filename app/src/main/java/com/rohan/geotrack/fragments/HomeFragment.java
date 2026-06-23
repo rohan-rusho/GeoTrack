@@ -1,7 +1,6 @@
 package com.rohan.geotrack.fragments;
 
 import android.Manifest;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -198,11 +197,10 @@ public class HomeFragment extends Fragment {
                     seconds %= 60;
                     minutes %= 60;
                     tvRuntime.setText(String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds));
-                } else if (preferenceManager.isTracking() && preferenceManager.isPaused()) {
-                    // Stay at current value
-                } else {
+                } else if (!preferenceManager.isTracking()) {
                     tvRuntime.setText("00:00:00");
                 }
+                // If tracking is paused, we just don't update the text, effectively freezing it
                 handler.postDelayed(this, 1000);
             }
         });
