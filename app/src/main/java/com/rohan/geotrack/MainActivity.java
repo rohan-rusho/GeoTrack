@@ -50,8 +50,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         preferenceManager = new PreferenceManager(this);
         setupNavigation();
-        checkPermissions();
-        checkBatteryOptimization();
+        checkAllRequiredPermissions();
         handleIntent(getIntent());
 
         // Handle Back Button
@@ -111,20 +110,81 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    private void checkBatteryOptimization() {
+    private void checkAllRequiredPermissions() {
+        boolean locDenied = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
+        boolean bgLocDenied = false;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            bgLocDenied = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED;
+        }
+        boolean notifDenied = false;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            notifDenied = ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED;
+        }
         android.os.PowerManager pm = (android.os.PowerManager) getSystemService(android.content.Context.POWER_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !pm.isIgnoringBatteryOptimizations(getPackageName())) {
+        boolean batteryDenied = false;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            batteryDenied = !pm.isIgnoringBatteryOptimizations(getPackageName());
+        }
+
+        if (locDenied || bgLocDenied || notifDenied || batteryDenied) {
+            showUnifiedPermissionDialog(locDenied, bgLocDenied, notifDenied, batteryDenied);
+        }
+    }
+
+    private void showUnifiedPermissionDialog(boolean loc, boolean bg, boolean notif, boolean batt) {
+        StringBuilder message = new StringBuilder("GeoTrack needs the following to work perfectly:\n");
+        if (loc) message.append("\n• Location Access (Mandatory)");
+        if (bg) message.append("\n• Background Location (Mandatory)");
+        if (notif) message.append("\n• Notifications (Recommended)");
+        if (batt) message.append("\n• Unrestricted Battery (Recommended)");
+
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Permissions Required")
+                .setMessage(message.toString())
+                .setPositiveButton("Grant Now", (dialog, which) -> {
+                    if (loc) {
+                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_CODE);
+                    } else if (bg) {
+                        requestBackgroundLocation();
+                    } else if (notif) {
+                        requestNotificationPermission();
+                    } else if (batt) {
+                        requestBatteryOptimization();
+                    }
+                })
+                .setNegativeButton("Later", null)
+                .show();
+    }
+
+    private void requestBackgroundLocation() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             new androidx.appcompat.app.AlertDialog.Builder(this)
-                        .setTitle("Battery Optimization")
-                        .setMessage("GeoTrack needs unrestricted battery access to ensure reliable background tracking. Please allow this in the next screen.")
-                        .setPositiveButton("Allow", (dialog, which) -> {
-                            Intent intent = new Intent();
-                            intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-                            intent.setData(Uri.parse("package:" + getPackageName()));
-                            startActivity(intent);
-                        })
-                        .setNegativeButton("Later", null)
-                        .show();
+                    .setTitle("Background Location")
+                    .setMessage("Please select 'Allow all the time' in the next screen to enable tracking while the app is closed.")
+                    .setPositiveButton("Configure", (dialog, which) -> {
+                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION}, 102);
+                    })
+                    .show();
+        }
+    }
+
+    private void requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 103);
+        }
+    }
+
+    private void requestBatteryOptimization() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Intent intent = new Intent();
+            intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+            intent.setData(Uri.parse("package:" + getPackageName()));
+            try {
+                startActivity(intent);
+            } catch (Exception e) {
+                intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+                startActivity(intent);
+            }
         }
     }
 
@@ -157,6 +217,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         android.widget.TextView tvNavAppName = headerView.findViewById(R.id.tv_nav_app_name);
         if (tvNavAppName != null) {
             tvNavAppName.setText(UIUtils.getStyledAppName(this));
+        }
+
+        android.view.View exitHeader = headerView.findViewById(R.id.btn_exit_header);
+        if (exitHeader != null) {
+            exitHeader.setOnClickListener(v -> {
+                drawerLayout.closeDrawer(GravityCompat.START);
+                showExitConfirmation();
+            });
         }
 
         // Make Exit Application red
@@ -220,26 +288,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    private void checkPermissions() {
-        List<String> permissions = new ArrayList<>();
-        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-        
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            permissions.add(Manifest.permission.POST_NOTIFICATIONS);
-        }
 
-        List<String> listPermissionsNeeded = new ArrayList<>();
-        for (String p : permissions) {
-            if (ActivityCompat.checkSelfPermission(this, p) != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(p);
-            }
-        }
-
-        if (!listPermissionsNeeded.isEmpty()) {
-            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[0]), PERMISSION_REQUEST_CODE);
-        }
-    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -262,21 +311,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        boolean granted = grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
+        
         if (requestCode == PERMISSION_REQUEST_CODE) {
-            boolean allGranted = true;
-            for (int i = 0; i < permissions.length; i++) {
-                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                    allGranted = false;
-                    if (Manifest.permission.POST_NOTIFICATIONS.equals(permissions[i])) {
-                        Toast.makeText(this, "Notification permission denied.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(this, "Location permissions are required for tracking.", Toast.LENGTH_LONG).show();
-                    }
-                }
-            }
-            if (allGranted) {
+            if (granted) {
                 autoStartTrackingIfFirstRun();
+            } else {
+                Toast.makeText(this, "Location permissions are required for tracking.", Toast.LENGTH_LONG).show();
+            }
+        } else if (requestCode == 102) {
+            if (!granted) {
+                Toast.makeText(this, "Background location is recommended for better tracking.", Toast.LENGTH_SHORT).show();
+            }
+        } else if (requestCode == 103) {
+            if (!granted) {
+                Toast.makeText(this, "Notification permission denied.", Toast.LENGTH_SHORT).show();
             }
         }
+        
+        // Re-check for other missing permissions/settings
+        checkAllRequiredPermissions();
     }
 }
