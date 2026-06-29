@@ -60,21 +60,28 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             tvDate.setText(new SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(new Date(location.getTimestamp())));
             tvTime.setText(new SimpleDateFormat("hh:mm a", Locale.getDefault()).format(new Date(location.getTimestamp())));
             
-            long diff = System.currentTimeMillis() - location.getCreatedAt();
-            long seconds = diff / 1000;
-            long minutes = seconds / 60;
-            long hours = minutes / 60;
-            long days = hours / 24;
-            long months = days / 30;
-            long years = days / 365;
+            // Calculate "time ago" based on minute difference as per user request
+            long now = System.currentTimeMillis();
+            long recordTime = location.getTimestamp(); 
+
+            long nowMin = now / 60000;
+            long recordMin = recordTime / 60000;
+            long diffMin = nowMin - recordMin;
 
             String timeAgo;
-            if (seconds < 60) timeAgo = "Just now";
-            else if (minutes < 60) timeAgo = minutes + "m ago";
-            else if (hours < 24) timeAgo = hours + "h ago";
-            else if (days < 30) timeAgo = days + "d ago";
-            else if (months < 12) timeAgo = months + "mo ago";
-            else timeAgo = years + "y ago";
+            if (diffMin <= 0) {
+                timeAgo = "0m ago";
+            } else if (diffMin < 60) {
+                timeAgo = diffMin + "m ago";
+            } else {
+                long diffHour = diffMin / 60;
+                if (diffHour < 24) {
+                    timeAgo = diffHour + "h ago";
+                } else {
+                    long diffDay = diffHour / 24;
+                    timeAgo = diffDay + "d ago";
+                }
+            }
 
             tvAccuracy.setText(timeAgo);
             

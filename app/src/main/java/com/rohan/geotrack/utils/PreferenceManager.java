@@ -74,6 +74,14 @@ public class PreferenceManager {
         return sharedPreferences.getLong(Constants.KEY_LAST_SAVE_TIME, 0);
     }
 
+    public void setPauseElapsedTime(long time) {
+        sharedPreferences.edit().putLong(Constants.KEY_PAUSE_ELAPSED_TIME, time).apply();
+    }
+
+    public long getPauseElapsedTime() {
+        return sharedPreferences.getLong(Constants.KEY_PAUSE_ELAPSED_TIME, 0);
+    }
+
     public boolean isFirstRun() {
         return sharedPreferences.getBoolean(Constants.KEY_IS_FIRST_RUN, true);
     }

@@ -267,13 +267,39 @@ public class SettingsFragment extends Fragment {
                     } else if (bg) {
                         requestBackgroundLocation();
                     } else if (notif) {
-                        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.POST_NOTIFICATIONS}, 103);
+                        handleNotificationPermissionRequest();
                     } else if (batt) {
                         openBatteryOptimizationSettings();
                     }
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
+    }
+
+    private void handleNotificationPermissionRequest() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.POST_NOTIFICATIONS)) {
+                ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.POST_NOTIFICATIONS}, 103);
+            } else {
+                // If denied already or first time
+                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                
+                // Open app settings for notifications
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+                intent.putExtra(Settings.EXTRA_APP_PACKAGE, requireContext().getPackageName());
+                try {
+                    startActivity(intent);
+                    Toast.makeText(requireContext(), "Please enable notifications in settings", Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    intent.setData(Uri.parse("package:" + requireContext().getPackageName()));
+                    startActivity(intent);
+                }
+            }
+        }
     }
 
     private void requestBackgroundLocation() {
