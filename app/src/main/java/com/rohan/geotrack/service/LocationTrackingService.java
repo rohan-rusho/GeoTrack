@@ -126,9 +126,7 @@ public class LocationTrackingService extends Service {
     }
 
     private void showToast(Location location) {
-        String msg = String.format(Locale.getDefault(), "Location Updated:\nLat: %.4f\nLng: %.4f",
-                location.getLatitude(), location.getLongitude());
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "GeoTrack: Location Updated", Toast.LENGTH_SHORT).show();
     }
 
     private final android.content.BroadcastReceiver locationProviderReceiver = new android.content.BroadcastReceiver() {
