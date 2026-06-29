@@ -122,9 +122,22 @@
                             android:textStyle="bold"
                             android:textSize="16sp"
                             android:textColor="@color/text_primary"
-                            android:layout_toStartOf="@id/tv_status_badge"
                             android:layout_alignParentStart="true"
-                            android:layout_marginEnd="8dp" />
+                            android:layout_toStartOf="@id/tv_status_badge"
+                            android:layout_marginEnd="8dp"
+                            android:layout_centerVertical="true" />
+
+                        <ImageView
+                            android:id="@+id/iv_status_arrow"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_chevron_right"
+                            app:tint="@color/text_secondary"
+                            android:alpha="0.5"
+                            android:contentDescription="@string/go_to_details" />
+
                         <TextView
                             android:id="@+id/tv_status_badge"
                             android:layout_width="wrap_content"
@@ -134,7 +147,9 @@
                             android:background="@drawable/red_badge_bg"
                             android:paddingHorizontal="12dp"
                             android:paddingVertical="4dp"
-                            android:layout_alignParentEnd="true"
+                            android:layout_toStartOf="@id/iv_status_arrow"
+                            android:layout_marginEnd="8dp"
+                            android:layout_centerVertical="true"
                             android:textSize="12sp"
                             android:textStyle="bold" />
                     </RelativeLayout>
