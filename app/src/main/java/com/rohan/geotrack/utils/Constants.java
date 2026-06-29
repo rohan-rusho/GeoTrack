@@ -11,6 +11,8 @@ public class Constants {
     public static final String KEY_SERVICE_START_TIME = "service_start_time";
     public static final String KEY_TOTAL_RUNTIME = "total_runtime";
     public static final String KEY_LAST_SAVE_TIME = "last_save_time";
+    public static final String KEY_LAST_LATITUDE = "last_latitude";
+    public static final String KEY_LAST_LONGITUDE = "last_longitude";
     public static final String KEY_IS_FIRST_RUN = "is_first_run";
     public static final String KEY_PAUSE_ELAPSED_TIME = "pause_elapsed_time";
 

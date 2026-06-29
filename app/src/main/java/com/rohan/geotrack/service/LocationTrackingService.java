@@ -94,7 +94,6 @@ public class LocationTrackingService extends Service {
                 if (lastLocation != null && preferenceManager.isTracking() && !preferenceManager.isPaused()) {
                     saveIncrementalRuntime();
                     saveLocationToDb(lastLocation);
-                    updateNotification(lastLocation);
                 }
             }
         };
@@ -115,6 +114,8 @@ public class LocationTrackingService extends Service {
         }
 
         preferenceManager.setLastSaveTime(now);
+        preferenceManager.setLastLocation(location.getLatitude(), location.getLongitude());
+        updateNotification(location);
         
         // Use the current system time for the record to match the app's runtime clock
         // and the user's expectation of "exact seconds" from when the app started.
@@ -208,9 +209,6 @@ public class LocationTrackingService extends Service {
         if (serviceStartTime == 0) {
             serviceStartTime = System.currentTimeMillis();
             preferenceManager.setServiceStartTime(serviceStartTime);
-            if (preferenceManager.getLastSaveTime() == 0) {
-                preferenceManager.setLastSaveTime(serviceStartTime);
-            }
         }
 
         startForeground(Constants.NOTIFICATION_ID, createNotification(null));
@@ -259,7 +257,6 @@ public class LocationTrackingService extends Service {
     private void stopTracking() {
         fusedLocationClient.removeLocationUpdates(locationCallback);
         preferenceManager.setTracking(false);
-        preferenceManager.setLastSaveTime(0);
         stopForeground(true);
         stopSelf();
     }
@@ -279,19 +276,35 @@ public class LocationTrackingService extends Service {
         RemoteViews collapsedView = new RemoteViews(getPackageName(), R.layout.notification_tracking_collapsed);
         RemoteViews expandedView = new RemoteViews(getPackageName(), R.layout.notification_tracking);
 
+        String lat, lng, time;
         if (location != null) {
-            String lat = String.format(Locale.getDefault(), "%.2f", location.getLatitude());
-            String lng = String.format(Locale.getDefault(), "%.2f", location.getLongitude());
-            String time = formatTimeShort(location.getTime());
+            lat = String.format(Locale.getDefault(), "%.2f", location.getLatitude());
+            lng = String.format(Locale.getDefault(), "%.2f", location.getLongitude());
+            time = formatTimeShort(System.currentTimeMillis());
+        } else {
+            double lastLat = preferenceManager.getLastLatitude();
+            double lastLng = preferenceManager.getLastLongitude();
+            long lastSaveTime = preferenceManager.getLastSaveTime();
 
-            collapsedView.setTextViewText(R.id.tvLat, lat);
-            collapsedView.setTextViewText(R.id.tvLng, lng);
-            collapsedView.setTextViewText(R.id.tvUpdated, time);
-
-            expandedView.setTextViewText(R.id.tvLat, lat);
-            expandedView.setTextViewText(R.id.tvLng, lng);
-            expandedView.setTextViewText(R.id.tvUpdated, time);
+            // Only show values if we have BOTH coordinates and a valid save time
+            if (lastSaveTime != 0 && (lastLat != 0.0 || lastLng != 0.0)) {
+                lat = String.format(Locale.getDefault(), "%.2f", lastLat);
+                lng = String.format(Locale.getDefault(), "%.2f", lastLng);
+                time = formatTimeShort(lastSaveTime);
+            } else {
+                lat = "--.--";
+                lng = "--.--";
+                time = "--:--";
+            }
         }
+
+        collapsedView.setTextViewText(R.id.tvLat, lat);
+        collapsedView.setTextViewText(R.id.tvLng, lng);
+        collapsedView.setTextViewText(R.id.tvUpdated, time);
+
+        expandedView.setTextViewText(R.id.tvLat, lat);
+        expandedView.setTextViewText(R.id.tvLng, lng);
+        expandedView.setTextViewText(R.id.tvUpdated, time);
 
         String formattedInterval = formatIntervalString(preferenceManager.getTrackingInterval());
         collapsedView.setTextViewText(R.id.tvInterval, formattedInterval);
@@ -313,6 +326,7 @@ public class LocationTrackingService extends Service {
                 .setCustomBigContentView(expandedView)
                 .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
                 .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setShowWhen(false)
                 .setOngoing(true)
                 .build();
     }
