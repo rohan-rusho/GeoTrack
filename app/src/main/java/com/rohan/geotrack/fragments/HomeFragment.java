@@ -186,21 +186,31 @@ public class HomeFragment extends Fragment {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                if (preferenceManager.isTracking() && !preferenceManager.isPaused()) {
-                    long startTime = preferenceManager.getServiceStartTime();
-                    if (startTime == 0) startTime = System.currentTimeMillis();
-                    long millis = System.currentTimeMillis() - startTime;
+                boolean isTracking = preferenceManager.isTracking();
+                boolean isPaused = preferenceManager.isPaused();
+                
+                if (isTracking) {
+                    long lastSave = preferenceManager.getLastSaveTime();
+                    long displayMillis = 0;
+                    
+                    if (isPaused) {
+                        displayMillis = preferenceManager.getPauseElapsedTime();
+                    } else if (lastSave != 0) {
+                        displayMillis = System.currentTimeMillis() - lastSave;
+                    }
+                    
+                    if (displayMillis < 0) displayMillis = 0;
 
-                    int seconds = (int) (millis / 1000);
+                    int seconds = (int) (displayMillis / 1000);
                     int minutes = seconds / 60;
                     int hours = minutes / 60;
                     seconds %= 60;
                     minutes %= 60;
                     tvRuntime.setText(String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds));
-                } else if (!preferenceManager.isTracking()) {
+                } else {
                     tvRuntime.setText("00:00:00");
                 }
-                // If tracking is paused, we just don't update the text, effectively freezing it
+
                 handler.postDelayed(this, 1000);
             }
         });
@@ -239,6 +249,12 @@ public class HomeFragment extends Fragment {
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
             return;
         }
+        
+        // Reset session stats for fresh start
+        preferenceManager.setTotalRuntime(0);
+        preferenceManager.setServiceStartTime(0);
+        preferenceManager.setLastSaveTime(0);
+        preferenceManager.setPauseElapsedTime(0);
         
         preferenceManager.setTracking(true);
         preferenceManager.setPaused(false);

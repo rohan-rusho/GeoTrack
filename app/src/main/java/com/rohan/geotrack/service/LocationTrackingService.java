@@ -12,6 +12,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
@@ -94,9 +95,6 @@ public class LocationTrackingService extends Service {
                     saveIncrementalRuntime();
                     saveLocationToDb(lastLocation);
                     updateNotification(lastLocation);
-                    if (preferenceManager.isShowToast()) {
-                        showToast(lastLocation);
-                    }
                 }
             }
         };
@@ -104,21 +102,41 @@ public class LocationTrackingService extends Service {
 
     private void saveLocationToDb(Location location) {
         long now = System.currentTimeMillis();
+        
+        int intervalSeconds = preferenceManager.getTrackingInterval();
+        long intervalMillis = intervalSeconds * 1000L;
+        long lastSave = preferenceManager.getLastSaveTime();
+        
+        // Strict interval check for "perfect" seconds.
+        // We use a minimal 1-second buffer to handle minor system jitter, 
+        // ensuring we save as close to the exact second as possible.
+        if (lastSave != 0 && (now - lastSave) < (intervalMillis - 1000L)) {
+            return;
+        }
+
         preferenceManager.setLastSaveTime(now);
+        
+        // Use the current system time for the record to match the app's runtime clock
+        // and the user's expectation of "exact seconds" from when the app started.
         LocationEntity entity = new LocationEntity(
                 location.getLatitude(),
                 location.getLongitude(),
                 location.getAccuracy(),
                 location.getProvider(),
-                location.getTime(),
+                now,
                 now
         );
         executorService.execute(() -> {
             try {
                 database.locationDao().insertLocation(entity);
-                // Broadcast intent to update UI instantly if needed
+                // Broadcast intent to update UI instantly
                 Intent updateIntent = new Intent(Constants.ACTION_LOCATION_UPDATED);
                 sendBroadcast(updateIntent);
+                
+                // Show toast ONLY when a record is successfully saved
+                if (preferenceManager.isShowToast()) {
+                    new Handler(Looper.getMainLooper()).post(() -> showToast(location));
+                }
             } catch (Exception e) {
                 Log.e(TAG, "Failed to save location to database", e);
             }
@@ -151,12 +169,31 @@ public class LocationTrackingService extends Service {
                 stopTracking();
                 return START_NOT_STICKY;
             } else if (Constants.ACTION_PAUSE_TRACKING.equals(action)) {
+                updateTotalRuntime(); // Update and reset serviceStartTime
+                
+                // Store how much time has passed since the last record was saved
+                long now = System.currentTimeMillis();
+                long lastSave = preferenceManager.getLastSaveTime();
+                if (lastSave != 0) {
+                    preferenceManager.setPauseElapsedTime(now - lastSave);
+                }
+                
                 preferenceManager.setPaused(true);
                 fusedLocationClient.removeLocationUpdates(locationCallback);
                 updateNotification(null);
                 broadcastStateChange();
                 return START_STICKY;
             } else if (Constants.ACTION_RESUME_TRACKING.equals(action)) {
+                // Restore the timeline by shifting lastSaveTime forward
+                long now = System.currentTimeMillis();
+                long elapsed = preferenceManager.getPauseElapsedTime();
+                if (elapsed != 0) {
+                    preferenceManager.setLastSaveTime(now - elapsed);
+                }
+                
+                serviceStartTime = now;
+                preferenceManager.setServiceStartTime(now);
+
                 preferenceManager.setPaused(false);
                 requestLocationUpdates();
                 updateNotification(null);
@@ -203,9 +240,13 @@ public class LocationTrackingService extends Service {
         int intervalSeconds = preferenceManager.getTrackingInterval();
         long intervalMillis = intervalSeconds * 1000L;
 
-        LocationRequest locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, intervalMillis)
-                .setMinUpdateIntervalMillis(intervalMillis / 2)
-                .setMaxUpdateDelayMillis(intervalMillis) // Ensure updates are not delayed/batched too much
+        // Increase frequency to every 1 second when approaching the target
+        // to ensure we hit the "perfect" second without a 1-2s delay.
+        long fastInterval = 1000L;
+
+        LocationRequest locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, fastInterval)
+                .setMinUpdateIntervalMillis(fastInterval)
+                .setMaxUpdateDelayMillis(0)
                 .setWaitForAccurateLocation(false)
                 .build();
 

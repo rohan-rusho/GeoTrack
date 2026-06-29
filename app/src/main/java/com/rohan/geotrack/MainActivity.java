@@ -16,6 +16,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -170,7 +171,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void requestNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 103);
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.POST_NOTIFICATIONS)) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 103);
+            } else {
+                // Check if it's already denied (not the first time)
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                // Open settings if permanently denied or first time (rationale is false for both)
+                // Actually, if it's the first time, rationale is false. requestPermissions will show the dialog.
+                // If it was denied once, rationale is true.
+                // If "Don't ask again" is checked, rationale is false.
+                
+                // Better approach: try to request first, and if it fails to show anything, then suggest settings.
+                // But for simplicity and directness as requested:
+                Intent intent = new Intent();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+                    intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+                } else {
+                    intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+                    intent.putExtra("app_package", getPackageName());
+                    intent.putExtra("app_uid", getApplicationInfo().uid);
+                }
+                try {
+                    startActivity(intent);
+                    Toast.makeText(this, "Please enable notifications in settings", Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    intent.setData(Uri.parse("package:" + getPackageName()));
+                    startActivity(intent);
+                }
+            }
         }
     }
 
@@ -217,14 +249,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         android.widget.TextView tvNavAppName = headerView.findViewById(R.id.tv_nav_app_name);
         if (tvNavAppName != null) {
             tvNavAppName.setText(UIUtils.getStyledAppName(this));
-        }
-
-        android.view.View exitHeader = headerView.findViewById(R.id.btn_exit_header);
-        if (exitHeader != null) {
-            exitHeader.setOnClickListener(v -> {
-                drawerLayout.closeDrawer(GravityCompat.START);
-                showExitConfirmation();
-            });
         }
 
         // Make Exit Application red
@@ -321,7 +345,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         } else if (requestCode == 102) {
             if (!granted) {
-                Toast.makeText(this, "Background location is recommended for better tracking.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Background location is recommended.", Toast.LENGTH_SHORT).show();
             }
         } else if (requestCode == 103) {
             if (!granted) {
@@ -329,7 +353,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
         
-        // Re-check for other missing permissions/settings
-        checkAllRequiredPermissions();
+        // Re-check for other missing permissions/settings, but don't show dialog again immediately 
+        // if we just came back from a denial to avoid loops.
+        // Instead, just update the UI state.
     }
 }

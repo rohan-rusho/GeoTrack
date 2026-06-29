@@ -12,6 +12,7 @@ public class Constants {
     public static final String KEY_TOTAL_RUNTIME = "total_runtime";
     public static final String KEY_LAST_SAVE_TIME = "last_save_time";
     public static final String KEY_IS_FIRST_RUN = "is_first_run";
+    public static final String KEY_PAUSE_ELAPSED_TIME = "pause_elapsed_time";
 
     // Default Values
     public static final int DEFAULT_INTERVAL = 300; // 5 Minutes in seconds

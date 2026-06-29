@@ -70,13 +70,22 @@ public class ServiceStatusActivity extends AppCompatActivity {
     };
 
     private void updateRuntimeDisplay() {
-        if (preferenceManager.isTracking() && !preferenceManager.isPaused()) {
-            long startTime = preferenceManager.getServiceStartTime();
-            if (startTime != 0) {
-                long displayRuntime = System.currentTimeMillis() - startTime;
-                tvRuntime.setText(formatDuration(displayRuntime));
+        boolean isTracking = preferenceManager.isTracking();
+        boolean isPaused = preferenceManager.isPaused();
+        
+        if (isTracking) {
+            long lastSave = preferenceManager.getLastSaveTime();
+            long displayMillis = 0;
+            
+            if (isPaused) {
+                displayMillis = preferenceManager.getPauseElapsedTime();
+            } else if (lastSave != 0) {
+                displayMillis = System.currentTimeMillis() - lastSave;
             }
-        } else if (!preferenceManager.isTracking()) {
+            
+            if (displayMillis < 0) displayMillis = 0;
+            tvRuntime.setText(formatDuration(displayMillis));
+        } else {
             tvRuntime.setText("00:00:00");
         }
     }
