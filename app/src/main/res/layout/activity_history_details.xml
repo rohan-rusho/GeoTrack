@@ -58,11 +58,20 @@
             </com.google.android.material.card.MaterialCardView>
 
             <Button
+                android:id="@+id/btn_det_open_map"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/open_in_map"
+                android:layout_marginTop="16dp"
+                app:icon="@drawable/ic_open_app"
+                app:iconGravity="textStart" />
+
+            <Button
                 android:id="@+id/btn_det_share"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Share Coordinates"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 app:icon="@drawable/ic_location"
                 app:iconGravity="textStart" />
 

@@ -30,4 +30,5 @@
     <string name="every_30_minutes">Every 30 Minutes</string>
     <string name="show_toast_notification">Show Toast Notification</string>
     <string name="auto_start_after_reboot">Auto Start After Device Reboot</string>
+    <string name="open_in_map">Open in Map</string>
 </resources>
