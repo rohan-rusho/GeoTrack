@@ -74,6 +74,21 @@ public class PreferenceManager {
         return sharedPreferences.getLong(Constants.KEY_LAST_SAVE_TIME, 0);
     }
 
+    public void setLastLocation(double lat, double lng) {
+        sharedPreferences.edit()
+                .putLong(Constants.KEY_LAST_LATITUDE, Double.doubleToRawLongBits(lat))
+                .putLong(Constants.KEY_LAST_LONGITUDE, Double.doubleToRawLongBits(lng))
+                .apply();
+    }
+
+    public double getLastLatitude() {
+        return Double.longBitsToDouble(sharedPreferences.getLong(Constants.KEY_LAST_LATITUDE, Double.doubleToRawLongBits(0.0)));
+    }
+
+    public double getLastLongitude() {
+        return Double.longBitsToDouble(sharedPreferences.getLong(Constants.KEY_LAST_LONGITUDE, Double.doubleToRawLongBits(0.0)));
+    }
+
     public void setPauseElapsedTime(long time) {
         sharedPreferences.edit().putLong(Constants.KEY_PAUSE_ELAPSED_TIME, time).apply();
     }
