@@ -244,6 +244,8 @@
             android:text="Exit Application"
             style="@style/Widget.Material3.Button.OutlinedButton"
             android:textColor="@color/error"
+            app:icon="@drawable/ic_exit"
+            app:iconTint="@color/error"
             android:layout_marginTop="16dp"
             android:layout_marginHorizontal="8dp"
             android:layout_marginBottom="32dp" />

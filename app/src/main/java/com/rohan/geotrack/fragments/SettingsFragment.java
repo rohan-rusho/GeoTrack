@@ -111,7 +111,7 @@ public class SettingsFragment extends Fragment {
 
         btnExit.setOnClickListener(v1 -> showExitConfirmation());
         v.findViewById(R.id.card_permissions).setOnClickListener(v1 -> requestMissingPermissions());
-        v.findViewById(R.id.card_battery_optimization).setOnClickListener(v1 -> openBatteryOptimizationSettings());
+        v.findViewById(R.id.card_battery_optimization).setOnClickListener(v1 -> requestMissingPermissions());
         
         v.findViewById(R.id.btn_reset_data).setOnClickListener(v1 -> showResetDataConfirmation());
         
@@ -228,20 +228,63 @@ public class SettingsFragment extends Fragment {
     }
 
     private void requestMissingPermissions() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 101);
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        boolean locDenied = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
+        boolean bgLocDenied = false;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            bgLocDenied = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED;
+        }
+        boolean notifDenied = false;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            notifDenied = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED;
+        }
+        
+        PowerManager pm = (PowerManager) requireContext().getSystemService(Context.POWER_SERVICE);
+        boolean battDenied = false;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            battDenied = !pm.isIgnoringBatteryOptimizations(requireContext().getPackageName());
+        }
+
+        if (locDenied || bgLocDenied || notifDenied || battDenied) {
+            showUnifiedPermissionDialog(locDenied, bgLocDenied, notifDenied, battDenied);
+        } else {
+            Toast.makeText(requireContext(), "All permissions granted", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void showUnifiedPermissionDialog(boolean loc, boolean bg, boolean notif, boolean batt) {
+        StringBuilder message = new StringBuilder("Please allow the following for the app to function correctly:\n");
+        if (loc) message.append("\n• Location Access (Mandatory)");
+        if (bg) message.append("\n• Background Location (Mandatory)");
+        if (notif) message.append("\n• Notifications (Recommended)");
+        if (batt) message.append("\n• Unrestricted Battery (Recommended)");
+
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Permissions Required")
+                .setMessage(message.toString())
+                .setPositiveButton("Grant Now", (dialog, which) -> {
+                    if (loc) {
+                        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 101);
+                    } else if (bg) {
+                        requestBackgroundLocation();
+                    } else if (notif) {
+                        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.POST_NOTIFICATIONS}, 103);
+                    } else if (batt) {
+                        openBatteryOptimizationSettings();
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void requestBackgroundLocation() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             new AlertDialog.Builder(requireContext())
                     .setTitle("Background Location")
-                    .setMessage("Please select 'Allow all the time' to enable tracking.")
+                    .setMessage("Please select 'Allow all the time' in the next screen to enable tracking while the app is closed.")
                     .setPositiveButton("Configure", (dialog, which) -> {
                         ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION}, 102);
                     })
                     .show();
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.POST_NOTIFICATIONS}, 103);
-        } else {
-            Toast.makeText(requireContext(), "All permissions granted", Toast.LENGTH_SHORT).show();
         }
     }
 
