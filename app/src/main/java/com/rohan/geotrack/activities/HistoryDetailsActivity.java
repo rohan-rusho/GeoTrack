@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +44,25 @@ public class HistoryDetailsActivity extends AppCompatActivity {
         findViewById(R.id.btn_det_copy).setOnClickListener(v -> copyToClipboard());
         findViewById(R.id.btn_det_delete).setOnClickListener(v -> deleteRecord());
         findViewById(R.id.btn_det_share).setOnClickListener(v -> shareLocation());
+        findViewById(R.id.btn_det_open_map).setOnClickListener(v -> openInMap());
+    }
+
+    private void openInMap() {
+        if (location == null) return;
+        String uri = String.format(Locale.ENGLISH, "geo:%f,%f?q=%f,%f", 
+            location.getLatitude(), location.getLongitude(), 
+            location.getLatitude(), location.getLongitude());
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        intent.setPackage("com.google.android.apps.maps");
+        try {
+            startActivity(intent);
+        } catch (Exception e) {
+            // Fallback to any map app or browser
+            Intent fallbackIntent = new Intent(Intent.ACTION_VIEW, 
+                Uri.parse("https://www.google.com/maps/search/?api=1&query=" + 
+                location.getLatitude() + "," + location.getLongitude()));
+            startActivity(fallbackIntent);
+        }
     }
 
     private void shareLocation() {
